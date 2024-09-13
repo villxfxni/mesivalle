@@ -418,16 +418,15 @@ function updateWaiterList() {
     });
 }
 
-function deleteWaiter(index) {
-    showConfirmModal('Delete Waiter', `Are you sure you want to delete ${waiters[index].name}?`, () => {
-        const deletedWaiter = waiters[index];
-        waiters.splice(index, 1);
-        clearWaiterTables(deletedWaiter);
-        updateWaiterList();
-        updateTablesDisplay();
-    });
-}
-
+    function deleteWaiter(index) {
+        showConfirmModal('Eliminar Mesero', `Seguro que quieres eliminar a ${waiters[index].name}?`, () => {
+            const deletedWaiter = waiters[index];
+            waiters.splice(index, 1);
+            clearWaiterTables(deletedWaiter);
+            updateWaiterList();
+            updateTablesDisplay();
+        });
+    }
 function clearWaiterTables(waiter) {
     for (let i = 0; i < tableAssignments.length; i++) {
         if (tableAssignments[i] !== null && waiters[tableAssignments[i]] === waiter) {
