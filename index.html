@@ -1,0 +1,618 @@
+<html>
+  <head>
+    <base href="about:blank"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #660033;
+    margin: 0;
+    padding: 20px;
+    height: 100vh;
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+        url('https://img.freepik.com/premium-vector/food-pattern_870869-14.jpg');
+    background-repeat: repeat;
+    background-blend-mode: normal; 
+}
+
+html{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container-fluid {
+    max-width: 800px;
+    text-align: center;
+    
+}
+h1, h2 {
+    text-align: center;
+    color: #860c45;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 45px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.tables, .waiters, .shift-container {
+    background-color: #ececec;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.tables {
+    width: 100%;
+}
+
+.waiters {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.shift-container {
+    width: 48%;
+}
+
+.table {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #860c45;
+    border-radius: 5px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    font-size: 18px;
+}
+
+.table.assigned {
+    background-color: #d4b892;
+}
+
+.table.done {
+    background-color: #99ff99;
+}
+
+.table-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.table-waiter {
+    font-size: 10px;
+}
+
+input, select, button {
+    margin: 5px 0;
+    padding: 5px;
+    width: 100%;
+}
+
+button {
+    background-color: #860c45;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #420c21;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.shift-toggle {
+    text-align: center;
+    margin-top:3%;
+}
+
+.shift-toggle button {
+    width: auto;
+    padding: 10px 20px;
+    margin: 10px 10px;
+    height: fit-content;
+}
+
+.shift-toggle button.active {
+    background-color: #4e0d26;
+}
+
+.waiter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.delete-waiter {
+    background-color: #e0bc1a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-waiter:hover {
+    background-color: #ffe81a;
+}
+#loginModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden; /* Hide scrollbar */
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('https://img.freepik.com/premium-vector/food-pattern_870869-14.jpg');
+    background-repeat: repeat;
+    background-blend-mode: normal;
+}
+
+#loginModal .modal-content {
+    background-color: #fefefe;
+    margin-right: 15% auto;
+    margin-left: 15% auto;
+    margin-bottom: 15% auto;
+    margin-top: 10%;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    max-height: calc(100vh - 30%); /* Adjust max-height to prevent overflow */
+    border-radius: 5px;
+    overflow: hidden; /* Prevent content overflow */
+}
+
+#loginModal input {
+    margin: 10px 0;
+}
+
+#logoutBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #860c45;
+    color: #ececec;
+    border-radius: 7px;
+    padding: 5px;
+}
+</style></head><body>
+     <div id="logoutBtn" onclick="logout()" style="display: none;">Logout</div>
+     <div class="container" style="margin-bottom: 25px;">
+        <img src="https://enlace.univalle.edu/san/Imagenes/MasterPage/LogoSan106x70.png" alt="Logo Univalle" height="90px" style="margin-left: 60px; background-color: #860c45; padding: 5px; border-radius: 55px;">
+        <h1 style=" -webkit-text-stroke-width: 3px;
+      -webkit-text-stroke-color:#860c45 ">MESIVALLE</h1>
+        <div class="container shift-toggle">
+            <button id="afternoonShiftBtn" onclick="toggleShift('afternoon')" class="active">Turno Mañana</button>
+            <button id="nightShiftBtn" onclick="toggleShift('night')">Turno Tarde</button>
+        </div>
+    </div>
+    <div class="container-fluid" >
+        <div class="tables" id="tables"></div>
+            <div class="waiters admin-only" >
+                <h2>Meseros:</h2>
+                <input type="text" id="waiterName" placeholder="Nombre Completo" style="width: 75%; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 16px;">
+                <select id="waiterShift" style="width: 75%; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 16px;">
+                    <option value="afternoon">Mañana</option>
+                    <option value="night">Tarde</option>
+                </select>
+                <button onclick="addWaiter()" style="width: 75%;">Añadir  Mesero</button>
+                <div class="shift-container" id="afternoonWaiters">
+                    <h3>Turno Mañana</h3>
+                    <div id="afternoonWaiterList"></div>
+                </div>
+                <div class="shift-container" id="nightWaiters">
+                    <h3>Turno Tarde</h3>
+                    <div id="nightWaiterList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="waiterAssignmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Asignar Mesero</h2>
+            <select id="waiterSelect"></select>
+            <button onclick="confirmAssignment()">Confirmar</button>
+        </div>
+    </div>
+
+    <div id="changeWaiterModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Cambiar Mesero:</h2>
+            <p>Mesero Actual: <span id="currentWaiter"></span></p>
+            <select id="newWaiterSelect"></select>
+            <button onclick="confirmChangeWaiter()">Cambiar Mesero</button>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="confirmTitle"></h2>
+            <p id="confirmMessage"></p>
+            <button id="confirmYes">Si</button>
+            <button id="confirmNo">No</button>
+        </div>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <p style="justify-content: center; text-align: center; margin-bottom: -15px; font-size: 18px;">¡Bienvenido a Mesivalle!</p>
+            <h2 style="font-size: 25px;">Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Ingresar</button>
+            <p id="loginError" style="color: red; display: none;">Credenciales Invalidas</p>
+        </div>
+    </div>    
+
+<script>
+const tables = 40;
+const maxTablesPerWaiter = 10;
+const maxWaiters=4;
+let waiters = [];
+let tableAssignments = new Array(tables).fill(null);
+let currentTableIndex = -1;
+let currentShift = 'afternoon';
+let currentUser = null;
+const adminCredentials = { username: 'admin', password: 'admin' };
+const serverCredentials = { username: 'public', password: 'public' };
+
+
+function showLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+}
+
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === adminCredentials.username && password === adminCredentials.password) {
+        currentUser = { username, role: 'admin' };
+    } else if (username=== serverCredentials.username && password===serverCredentials.password) {
+        currentUser = { username, role: 'user' };
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('username').value='';
+        document.getElementById('password').value='';
+        return;
+    }
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'block';
+    updateViewBasedOnRole();
+}
+
+function logout() {
+    currentUser = null;
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('username').value='';
+    document.getElementById('password').value='';
+    showLoginModal();
+    updateViewBasedOnRole();
+}
+
+function updateViewBasedOnRole() {
+    const adminElements = document.querySelectorAll('.admin-only');
+    const userElements = document.querySelectorAll('.user-only');
+
+    if (currentUser && currentUser.role === 'admin') {
+        adminElements.forEach(el => el.style.display = 'block');
+        userElements.forEach(el => el.style.display = 'none');
+    } else if (currentUser && currentUser.role === 'user') {
+        adminElements.forEach(el => el.style.display = 'none');
+        userElements.forEach(el => el.style.display = 'block');
+    } else {
+        adminElements.forEach(el => el.style.display = 'none');
+        userElements.forEach(el => el.style.display = 'none');
+    }
+
+    updateTablesDisplay();
+}
+
+function createTables() {
+    const tablesContainer = document.getElementById('tables');
+    for (let i = 0; i < tables; i++) {
+        const table = document.createElement('div');
+        table.className = 'table';
+        table.innerHTML = `
+            <span class="table-number">${i + 1}</span>
+            <span class="table-waiter"></span>
+            <span class="user-only table-info" style="display: none;"></span>
+        `;
+        table.onclick = () => handleTableClick(i);
+        tablesContainer.appendChild(table);
+    }
+}
+
+function addWaiter() {
+    const name = document.getElementById('waiterName').value;
+    const shift = document.getElementById('waiterShift').value;
+    if (name && waiters.length<4) {
+        waiters.push({ name, shift, tables: 0, totalTables: 0 });
+        updateWaiterList();
+        document.getElementById('waiterName').value = '';
+    }
+    else if(name && waiters.length>=4)
+    {
+        alert('Numero maximo de meseros: 4 retira un mesero para continuar');
+        document.getElementById('waiterName').value = '';
+    }
+}
+
+function updateWaiterList() {
+    const afternoonWaiterList = document.getElementById('afternoonWaiterList');
+    const nightWaiterList = document.getElementById('nightWaiterList');
+    afternoonWaiterList.innerHTML = '';
+    nightWaiterList.innerHTML = '';
+    waiters.forEach((waiter, index) => {
+        const waiterElement = document.createElement('div');
+        waiterElement.className = 'waiter-item';
+        waiterElement.innerHTML = `
+            <span>${waiter.name} - Active tables: ${waiter.tables}, Total tables: ${waiter.totalTables}</span>
+            <button class="delete-waiter" onclick="deleteWaiter(${index})">x</button>
+        `;
+        if (waiter.shift === 'afternoon') {
+            afternoonWaiterList.appendChild(waiterElement);
+        } else {
+            nightWaiterList.appendChild(waiterElement);
+        }
+    });
+}
+
+function deleteWaiter(index) {
+    showConfirmModal('Delete Waiter', `Are you sure you want to delete ${waiters[index].name}?`, () => {
+        const deletedWaiter = waiters[index];
+        waiters.splice(index, 1);
+        clearWaiterTables(deletedWaiter);
+        updateWaiterList();
+        updateTablesDisplay();
+    });
+}
+
+function clearWaiterTables(waiter) {
+    for (let i = 0; i < tableAssignments.length; i++) {
+        if (tableAssignments[i] !== null && waiters[tableAssignments[i]] === waiter) {
+            setTableAvailable(i);
+        }
+    }
+}
+
+function handleTableClick(tableIndex) {
+    if (currentUser && currentUser.role === 'admin') {
+        const table = document.getElementsByClassName('table')[tableIndex];
+        if (table.classList.contains('assigned')) {
+            showChangeWaiterModal(tableIndex);
+        } else if (table.classList.contains('done')) {
+            showConfirmModal('Reset Table', 'Do you want to reset this table?', () => {
+                table.classList.remove('done');
+                updateTableDisplay(tableIndex);
+            });
+        } else {
+            showWaiterAssignmentModal(tableIndex);
+        }
+    }
+}
+
+function showWaiterAssignmentModal(tableIndex) {
+    currentTableIndex = tableIndex;
+    const modal = document.getElementById('waiterAssignmentModal');
+    const waiterSelect = document.getElementById('waiterSelect');
+    waiterSelect.innerHTML = '';
+
+    waiters.forEach((waiter, index) => {
+        if (waiter.tables < maxTablesPerWaiter && waiter.shift === currentShift) {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `${waiter.name} - Active tables: ${waiter.tables}`;
+            waiterSelect.appendChild(option);
+        }
+    });
+
+    modal.style.display = 'block';
+}
+
+function showChangeWaiterModal(tableIndex) {
+    currentTableIndex = tableIndex;
+    const modal = document.getElementById('changeWaiterModal');
+    const currentWaiterSpan = document.getElementById('currentWaiter');
+    const newWaiterSelect = document.getElementById('newWaiterSelect');
+    
+    const currentWaiterIndex = tableAssignments[tableIndex];
+    currentWaiterSpan.textContent = waiters[currentWaiterIndex].name;
+
+    newWaiterSelect.innerHTML = '';
+    waiters.forEach((waiter, index) => {
+        if (index !== currentWaiterIndex && waiter.tables < maxTablesPerWaiter && waiter.shift === currentShift) {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `${waiter.name} - Active tables: ${waiter.tables}`;
+            newWaiterSelect.appendChild(option);
+        }
+    });
+
+    const setAvailableOption = document.createElement('option');
+    setAvailableOption.value = 'available';
+    setAvailableOption.textContent = 'Set table as available';
+    newWaiterSelect.appendChild(setAvailableOption);
+
+    modal.style.display = 'block';
+}
+
+function confirmAssignment() {
+    const waiterIndex = document.getElementById('waiterSelect').value;
+    if (waiterIndex !== '') {
+        assignTable(currentTableIndex, parseInt(waiterIndex));
+        document.getElementById('waiterAssignmentModal').style.display = 'none';
+    }
+}
+
+function confirmChangeWaiter() {
+    const newWaiterIndex = document.getElementById('newWaiterSelect').value;
+    if (newWaiterIndex === 'available') {
+        showConfirmModal('Set Table Available', 'Are you sure you want to set this table as available?', () => {
+            setTableAvailable(currentTableIndex);
+            document.getElementById('changeWaiterModal').style.display = 'none';
+        });
+    } else if (newWaiterIndex !== '') {
+        changeWaiter(currentTableIndex, parseInt(newWaiterIndex));
+        document.getElementById('changeWaiterModal').style.display = 'none';
+    }
+}
+
+function assignTable(tableIndex, waiterIndex) {
+    const table = document.getElementsByClassName('table')[tableIndex];
+    table.classList.add('assigned');
+    waiters[waiterIndex].tables++;
+    waiters[waiterIndex].totalTables++;
+    tableAssignments[tableIndex] = waiterIndex;
+    updateWaiterList();
+    updateTableDisplay(tableIndex);
+}
+
+function changeWaiter(tableIndex, newWaiterIndex) {
+    const oldWaiterIndex = tableAssignments[tableIndex];
+    waiters[oldWaiterIndex].tables--;
+    waiters[newWaiterIndex].tables++;
+    waiters[newWaiterIndex].totalTables++;
+    tableAssignments[tableIndex] = newWaiterIndex;
+    updateWaiterList();
+    updateTableDisplay(tableIndex);
+}
+
+function setTableAvailable(tableIndex) {
+    const table = document.getElementsByClassName('table')[tableIndex];
+    const oldWaiterIndex = tableAssignments[tableIndex];
+    if (oldWaiterIndex !== null && waiters[oldWaiterIndex]) {
+        waiters[oldWaiterIndex].tables--;
+    }
+    table.classList.remove('assigned');
+    tableAssignments[tableIndex] = null;
+    updateWaiterList();
+    updateTableDisplay(tableIndex);
+}
+
+function updateTableDisplay(tableIndex) {
+    const table = document.getElementsByClassName('table')[tableIndex];
+    const waiterSpan = table.querySelector('.table-waiter');
+    const userInfoSpan = table.querySelector('.user-only.table-info');
+    if (tableAssignments[tableIndex] !== null) {
+        const assignedWaiter = waiters[tableAssignments[tableIndex]];
+        waiterSpan.textContent = assignedWaiter.name;
+    } else {
+        waiterSpan.textContent = '';
+        userInfoSpan.textContent = 'Available';
+    }
+}
+
+function toggleShift(shift) {
+    currentShift = shift;
+    document.getElementById('afternoonShiftBtn').classList.toggle('active', shift === 'afternoon');
+    document.getElementById('nightShiftBtn').classList.toggle('active', shift === 'night');
+    document.getElementById('afternoonWaiters').style.display = shift === 'afternoon' ? 'block' : 'none';
+    document.getElementById('nightWaiters').style.display = shift === 'night' ? 'block' : 'none';
+    updateTablesDisplay();
+}
+
+function updateTablesDisplay() {
+    const tables = document.getElementsByClassName('table');
+    for (let i = 0; i < tables.length; i++) {
+        const waiterIndex = tableAssignments[i];
+        if (waiterIndex !== null) {
+            tables[i].style.display = waiters[waiterIndex].shift === currentShift ? 'inline-flex' : 'none';
+        } else {
+            tables[i].style.display = 'inline-flex';
+        }
+    }
+}
+
+function showConfirmModal(title, message, onConfirm) {
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    
+    document.getElementById('confirmYes').onclick = () => {
+        onConfirm();
+        modal.style.display = 'none';
+    };
+    
+    document.getElementById('confirmNo').onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    modal.style.display = 'block';
+}
+
+window.onclick = function(event) {
+    if (event.target.className === 'modal' || event.target.className === 'close') {
+        document.getElementById('waiterAssignmentModal').style.display = 'none';
+        document.getElementById('changeWaiterModal').style.display = 'none';
+        document.getElementById('confirmModal').style.display = 'none';
+        document.getElementById('loginModal').style.display = 'none';
+    }
+}
+
+createTables();
+toggleShift('afternoon');
+showLoginModal();
+</script>
+
+</body></html>
